@@ -3,6 +3,8 @@ import React from 'react';
 /**
  * A counter button: tap the button to increase the count.
  */
+let doctbdy;
+
 class Counter extends React.Component {
   constructor() {
     super();
@@ -16,7 +18,7 @@ class Counter extends React.Component {
     return (
       <button
         onClick={() => {
-          this.setState({ count: this.state.count + 2 });
+          this.setState({ count: this.state.count + 15});
         }}
       >
         Count: {this.state.count}

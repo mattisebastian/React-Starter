@@ -10,14 +10,17 @@ var config = {
     filename: 'bundle.js',
   },
   module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loaders: ['babel'],
-      },
-    ],
+    loaders: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      loader: "babel",
+      include: __dirname,
+      query: {
+        presets: [ 'es2015', 'react', 'react-hmre' ]
+      }
+    }]
   },
+  
   resolveLoader: {
     root: [
       path.join(__dirname, 'node_modules'),
