@@ -29,7 +29,6 @@
     "react-addons-transition-group": "^15.4.1",
     "react-dom": "^15.4.0",
     "reactstrap": "^3.9.3"
-
   },
   "devDependencies": {
     "babel-core": "^6.18.2",

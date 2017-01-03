@@ -3,7 +3,7 @@ import { Button, Form, FormGroup, Label, Input, FormText, Container, Row, Col } 
 
 
   const wsUri = "ws://echo.websocket.org/";
-  const websocket = new WebSocket(wsUri);
+  var websocket;
 
 export default class MainForm extends React.Component {
 
@@ -13,40 +13,63 @@ static get propTypes() {
     }
   }
 
-
-
   constructor(props) {
   	super(props);
   	this.state = {
-  		value: "aa"
+      connection: "Offline",
+  		value: ""
   	}
 
   	
   	this._handleAddParagraph = this._handleAddParagraph.bind(this);
   	this._handleTextChange = this._handleTextChange.bind(this);
-  	this._sendMessage = this._sendMessage.bind(this);
+    this._sendMessage = this._sendMessage.bind(this);
+    this.onClose = this.onClose.bind(this);
+    this.onError = this.onError.bind(this);
+    this._connect = this._connect.bind(this);
+  	this._disconnect = this._disconnect.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount() {    
+  }
 
+  componentWillUnmount() {
+    websocket.close();
+  }
 
+  onClose(evt) {
+    this.setState({
+      connection: "Offline"
+    })
+  console.log("DISCONNECTED");
+  }
+
+  onError(evt) {
+    this.setState({
+      connection: "Error"
+    })
+    console.log('ERROR:' + evt.data);
+  }
+
+  onOpen(evt) {
+    this.setState({
+      connection: "Connected"
+    })
+    console.log("CONNECTED");
+  }
+
+  _connect() {
+    console.log("yo")
+    websocket = new WebSocket(wsUri);
     websocket.onopen = evt => this.onOpen(evt);
     websocket.onmessage = evt => this.onMessage(evt);
-    websocket.onclose = function(evt) { onClose(evt) };
-    websocket.onerror = function(evt) { onError(evt) };
-    
-
-    function onClose(evt) {
-    console.log("DISCONNECTED");
-    }
-
-    function onError(evt) {
-      console.log('ERROR:' + evt.data);
-    }
+    websocket.onclose = evt => this.onClose(evt);
+    websocket.onerror = evt => this.onError(evt);
   }
-   onOpen(evt) {
-      console.log("CONNECTED");
-    }
+
+  _disconnect() {
+    websocket.close();
+  }
 
    onMessage(evt) {
    	  console.log("Received: " + evt.data);
@@ -79,11 +102,17 @@ static get propTypes() {
 	render() {
 		return(
 			<div>
+              <span>Connection status: {this.state.connection}</span> <i className="fa fa-lightbulb-o" id="lightbulb" aria-hidden="true" style={{color: 'red'}}></i>
               <FormGroup>
                 <Label for="examplePassword">Send something to server:</Label>
-                <Input type="text" value={this.state.value} onChange={this._handleTextChange} name="password" placeholder="Send something" />
+                <Input type="text" value={this.state.value} onChange={this._handleTextChange} placeholder="Send something" />
               </FormGroup> 
-          	 <button onClick={this._sendMessage}>Add Paragraph</button>           
+              <FormGroup>
+                <Button onClick={this._connect}>Connect</Button>{' '}         
+                <Button onClick={this._disconnect}>Disconnect</Button>{' '}           
+                <Button onClick={this._sendMessage}>Send</Button> 
+              </FormGroup>
+
             </div>
 		)
 	}}

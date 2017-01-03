@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText, Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import MainForm from './form';
 import LevelInput from './LevelInput';
 import Paragraphs from './paragraph';
@@ -16,14 +16,6 @@ export default class Example extends React.Component {
     
     this._onAddParagraph = this._onAddParagraph.bind(this);
   }
-
-
-
-
-  /* Lifecycle Methoden */
-
-
-  
 
   _onAddParagraph(item) {
     console.log(item);
