@@ -4,8 +4,6 @@ import ReactDOM from 'react-dom';
 // import Dashboard from './dashboard' 
 import Example from './example';
 
-
-
 ReactDOM.render(
     	<Example />,
     	document.getElementById('mount')
