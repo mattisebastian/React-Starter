@@ -1,73 +1,89 @@
 import React from 'react';
 import { Button, Form, FormGroup, Label, Input, FormText, Container, Row, Col } from 'reactstrap';
-import SlaForm from './SlaForm';
-import LevelInput from './LevelInput';
-
-export default class Example extends React.Component {
 
 
-  constructor() {
-    super();
-    this.state = {
-        data: {
-          customer: {
-            name: "defaultName"
-          }
-        }
-      };
+  const wsUri = "ws://echo.websocket.org/";
+  const websocket = new WebSocket(wsUri);
+
+export default class MainForm extends React.Component {
+
+static get propTypes() {
+    return {
+      onAddParagraph: React.PropTypes.func.isRequired
+    }
   }
 
-  /* Lifecycle Methoden */
+
+
+  constructor(props) {
+  	super(props);
+  	this.state = {
+  		value: "aa"
+  	}
+
+  	
+  	this._handleAddParagraph = this._handleAddParagraph.bind(this);
+  	this._handleTextChange = this._handleTextChange.bind(this);
+  	this._sendMessage = this._sendMessage.bind(this);
+  }
 
   componentDidMount() {
-    fetch('http://localhost:9090/api/requestSla', {
-      //mode: 'no-cors' // this means the response type will be 'opaque' - whatever that means
-    }).then(function(response) {
-      // Convert to JSON
-      return response.json();
-    }).then(function(j) {
-      // Yay, `j` is a JavaScript object
-      console.log(j);
-      this.setState({
-        data: j,
-        //numberOfLevels: j.offerObjectives["0"].numberOfLevels
-      });
-    }.bind(this));
+
+
+    websocket.onopen = evt => this.onOpen(evt);
+    websocket.onmessage = evt => this.onMessage(evt);
+    websocket.onclose = function(evt) { onClose(evt) };
+    websocket.onerror = function(evt) { onError(evt) };
+    
+
+    function onClose(evt) {
+    console.log("DISCONNECTED");
+    }
+
+    function onError(evt) {
+      console.log('ERROR:' + evt.data);
+    }
+  }
+   onOpen(evt) {
+      console.log("CONNECTED");
+    }
+
+   onMessage(evt) {
+   	  console.log("Received: " + evt.data);
+      this.setState({value: evt.data});
+      this._handleAddParagraph();
+      //websocket.close();
+    }
+
+  _handleAddParagraph() {
+  	this.props.onAddParagraph(this.state);
+  	this.setState({});
+
+  }
+
+  _handleTextChange(event) {
+        this.setState({
+            value: event.target.value
+        });
+  }
+
+  _sendMessage() {
+  	console.log("Sent: " + this.state.value);
+  	if(websocket){
+    	websocket.send(this.state.value);
+  	}
+  		
   }
 
 
-  render() {
-    //const levelsObject = this.state.data.offerObjectives[0];
-
-    return (
-      <div>
-        <h1>Request SLA here:</h1>
-      <Container>
-        <Row>
-          <Col xs="6">
-              <Form>
+	render() {
+		return(
+			<div>
               <FormGroup>
-                <Label for="exampleEmail">Customer Name</Label>
-                <Input type="text" name="name" id="exampleEmail" placeholder="with a placeholder" value={this.state.data.customer.name} />
-              </FormGroup>
-              <FormGroup>
-                <Label for="examplePassword">Address</Label>
-                <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
-              </FormGroup>
-              <FormGroup>
-                <Label for="examplePassword">Basic Price</Label>
-                <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
-              </FormGroup>
-              {
-                //console.log(levelsObject)
-              }              
-              </Form>
-          </Col>
-        </Row>
-      </Container>
-      </div>
-
-
-      );
-  }
-}
+                <Label for="examplePassword">Send something to server:</Label>
+                <Input type="text" value={this.state.value} onChange={this._handleTextChange} name="password" placeholder="Send something" />
+              </FormGroup> 
+          	 <button onClick={this._sendMessage}>Add Paragraph</button>           
+            </div>
+		)
+	}}
