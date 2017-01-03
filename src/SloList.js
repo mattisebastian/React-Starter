@@ -2,6 +2,9 @@ import React from 'react';
 //import { Button, Form, FormGroup, Label, Input, FormText, Container, Row, Col } from 'reactstrap';
 import SloItem from './SloItem';
 import AddSloItemForm from './AddSloItemForm';
+import EventBus from 'vertx3-eventbus-client'
+
+var eb; 
 
 export default class SloList extends React.Component {
 
@@ -9,11 +12,11 @@ export default class SloList extends React.Component {
         super(props);
         this.state = {
             aSlos: [
-                /*{
+                {
                     title: 'Umbrella Corp SLO',
                     description: 'Short Description'
                 },
-                {
+/*                {
                     title: 'Another Company Ltd.',
                     description: 'Some words about how this is important'
                 },
@@ -25,6 +28,17 @@ export default class SloList extends React.Component {
 
         };
         this._handleProductAdd = this._handleProductAdd.bind(this);
+    }
+
+    componentDidMount() {
+       eb = new EventBus("http://localhost:9090/eventbus");
+       eb.onopen = () => {
+        eb.registerHandler("news-feed", (err, msg) => {
+            this.setState({
+                aSlos: this.state.aSlos.concat({title: msg, description: "yo"})
+            });
+        });
+       }
     }
 
     _handleProductAdd(newSloItem) {
