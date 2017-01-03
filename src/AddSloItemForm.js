@@ -1,5 +1,5 @@
 import React from 'react';
-//import { Button, Form, FormGroup, Label, Input, FormText, Container, Row, Col } from 'reactstrap';
+import { Button, Input, FormGroup } from 'reactstrap';
 
 export default class AddSloItemForm extends React.Component {
 
@@ -11,7 +11,10 @@ export default class AddSloItemForm extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      title: "",
+      description: ""
+    };
 
     this._handleTitleChange = this._handleTitleChange.bind(this);
     this._handleDescriptionChange = this._handleDescriptionChange.bind(this);
@@ -45,14 +48,14 @@ export default class AddSloItemForm extends React.Component {
     return (
         <div className="well">
             <h2>Add a SLO</h2>
-
+            <FormGroup>
             <p>Title:</p>
-            <input value={this.state.title} onChange={this._handleTitleChange} />
+            <Input value={this.state.title} onChange={this._handleTitleChange} />
 
             <p>Description:</p>
-            <input value={this.state.description} onChange={this._handleDescriptionChange} />
-
-            <button onClick={this._handleProductAdd}>Add SLO</button>
+            <Input value={this.state.description} onChange={this._handleDescriptionChange} />
+            </FormGroup>
+            <Button onClick={this._handleProductAdd}>Add SLO</Button>
         </div>
       );
   }

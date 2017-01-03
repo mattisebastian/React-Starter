@@ -9,7 +9,7 @@ export default class SloList extends React.Component {
         super(props);
         this.state = {
             aSlos: [
-                {
+                /*{
                     title: 'Umbrella Corp SLO',
                     description: 'Short Description'
                 },
@@ -20,7 +20,7 @@ export default class SloList extends React.Component {
                 {
                     title: '3rd Entry SLO.',
                     description: 'Just a small description'
-                }
+                }*/
             ]
 
         };
@@ -39,11 +39,9 @@ export default class SloList extends React.Component {
             <div style={{
                 padding: '20px'
             }}>
-            <h1>A comprehensive list of all SLOs</h1>
+            {/*<AddSloItemForm onProductAdd={this._handleProductAdd} />*/}
 
-            <AddSloItemForm onProductAdd={this._handleProductAdd} />
-
-            {this.state.aSlos.map((p, i) => <SloItem title={p.title} description={p.description} nr={i} />)}
+            {this.state.aSlos.map((p, i) => <SloItem title={p.title} description={p.description} nr={i} key={i}/>)}
         </div>
             );
     }

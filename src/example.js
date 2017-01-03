@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import MainForm from './form';
+import MainForm from './mainform';
 import LevelInput from './LevelInput';
 import Paragraphs from './paragraph';
+import SloList from './SloList'
 
 export default class Example extends Component {
 
@@ -10,8 +11,9 @@ export default class Example extends Component {
   constructor() {
     super();
     this.state = {
-      messages: [{value: "Some Name"},
-                {value: "Other Name"}]
+      messages: [
+      {value: "Name"},
+      ]
     };
     
     this._onAddParagraph = this._onAddParagraph.bind(this);
@@ -40,7 +42,11 @@ export default class Example extends Component {
           </Col>
         </Row>
       </Container>
-
+      <hr />
+      <h2> News: </h2>
+      <div>
+        <SloList />
+      </div>
       </div>
 
 
