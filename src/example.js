@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import MainForm from './form';
 import LevelInput from './LevelInput';
 import Paragraphs from './paragraph';
 
-export default class Example extends React.Component {
+export default class Example extends Component {
 
   
   constructor() {
