@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Form, FormGroup, Label, Input, FormText, Container, Row, Col } from 'reactstrap';
 
 
-  const wsUri = "ws://echo.websocket.org/";
+  const wsUri = "http://localhost:9090/api/socket";
   var websocket;
 
 export default class MainForm extends React.Component {
@@ -60,7 +60,7 @@ static get propTypes() {
 
   _connect() {
     console.log("yo")
-    websocket = new WebSocket(wsUri);
+    websocket = new SockJS(wsUri);
     websocket.onopen = evt => this.onOpen(evt);
     websocket.onmessage = evt => this.onMessage(evt);
     websocket.onclose = evt => this.onClose(evt);
