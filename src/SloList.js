@@ -16,10 +16,11 @@ export default class SloList extends React.Component {
                     title: 'Umbrella Corp SLO',
                     description: 'Short Description'
                 },
-/*                {
+                {
                     title: 'Another Company Ltd.',
                     description: 'Some words about how this is important'
                 },
+                /*
                 {
                     title: '3rd Entry SLO.',
                     description: 'Just a small description'
@@ -30,16 +31,16 @@ export default class SloList extends React.Component {
         this._handleProductAdd = this._handleProductAdd.bind(this);
     }
 
-    componentDidMount() {
+/*    componentDidMount() {
        eb = new EventBus("http://localhost:9090/eventbus");
        eb.onopen = () => {
         eb.registerHandler("news-feed", (err, msg) => {
             this.setState({
-                aSlos: this.state.aSlos.concat({title: msg, description: "yo"})
+                aSlos: this.state.aSlos.concat({title: msg.body, description: msg.body + " yo"})
             });
         });
        }
-    }
+    }*/
 
     _handleProductAdd(newSloItem) {
       this.setState({
